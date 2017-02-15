@@ -1,0 +1,31 @@
+.container{
+    display: -webkit-flex;
+    flex-direction: row;
+    
+}
+
+.messageFrame{
+    display: -webkit-flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 300px;
+    align-items: center;
+    
+}
+.userFrame{
+    display: -webkit-flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 200px;
+    align-items: center;
+}
+
+.messageContainer{
+    display: -webkit-flex;
+    flex-direction: row;
+}
+.textField{
+    height: 100px;
+    width: auto;
+    
+}
