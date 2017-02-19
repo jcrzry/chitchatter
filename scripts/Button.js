@@ -1,25 +1,38 @@
 import * as React from 'react';
 import { Socket } from './Socket';
-import { MessageField } from './MessageField';
+// import { MessageField } from './MessageField';
 
-export class Button extends React.Component {
+export class MessageForm extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            value: ""
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+    handleChange(event){
+        this.setState({value: event.target.value});
+    }
+    
     handleSubmit(event) {
+        let messageText = this.state.value;
         event.preventDefault();
-
-        let messageText = document.getElementById('messageText').val();
-        
-        console.log('message sent: ', messageText);
-        Socket.emit('new message', {
+        if(this.state.value.trim() !== ""){
+             console.log('message', this.state.value)
+             Socket.emit('new message', {
             'message': messageText,
             // 'user' : username
         });
-        console.log('message sent');
+        }
+       
     }
 
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <button>Send</button>
+                <textarea value ={this.state.value} onChange = {this.handleChange} placeholder="Enter mesaage.." />
+                <input type = "submit" value = "Send"/>
             </form>
         );
     }

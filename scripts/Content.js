@@ -1,37 +1,31 @@
 import * as React from 'react';
 
-import { Button } from './Button';
+import { MessageForm } from './Button';
 import { Socket } from './Socket';
 
 export class Content extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'numbers': [],
-            'users': [] 
+            'users': [],
+            'messages': [] 
         };
     }
 
-    componentDidMount() {
-        Socket.on('all numbers', (data) => {
+    componentDidMount(){
+        Socket.on('all messages',(data) => {
             this.setState({
-                'numbers': data['numbers']
+            'messages' : data['messages']
             });
-        })
+        });
     }
 
     render() {
-        let numbers = this.state.numbers.map(
-            (n, index) => <li key={index}>{n}</li>
+        let messages = this.state.messages.map(
+            (n, index) => <div className ="messageContainer" key={index}>{n}</div>
         );
         return (
-            <div>
-                <div>
-                    <h1>Random numbers so far!</h1>
-                    <ul>{numbers}</ul>
-                    <Button />
-                </div>
-            </div>
+                <div>{messages}</div>
         );
     }
 }

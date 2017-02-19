@@ -1,22 +1,23 @@
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="..static/style.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
     </head>
     <body>
-        <script type="text/javascript" src="/static/script.js"></script>
         <div class = "container">
             <div style = "display:-webkit-flex;flex-direction:column;">
-                <div class = "messageFrame">
+                <div class = "messageFrame" id = "messageCenter">
                 <!--this is where the messages will populate-->
                 </div>
-                <div class = "textField">
+                <div class = "textField" id = "txtFld">
                     <!--this is where there will be a text field for input-->
-                    <input type="textarea" name="messageText"/>
+                    <!--<input type="textarea" name="messageText"/>-->
+                    
                 </div>
             </div>
             <div class ="userFrame">
                 
             </div>
         </div>
+        <script type="text/javascript" src="/static/script.js"></script>
     </body>
 </html>

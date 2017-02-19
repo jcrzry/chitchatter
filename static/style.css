@@ -1,3 +1,6 @@
+.body{
+    height: 900px;
+}
 .container{
     display: -webkit-flex;
     flex-direction: row;
@@ -8,7 +11,8 @@
     display: -webkit-flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 300px;
+    height: 600px;
+    width: 500px;
     align-items: center;
     
 }
@@ -23,9 +27,19 @@
 .messageContainer{
     display: -webkit-flex;
     flex-direction: row;
+    height: auto;
+    width: 200px;
+    font-family: sans-serif;
+    background-color: rgb(107, 137, 255);
+    alignment-baseline: central;
+    margin-bottom: 25px;
+    border: solid black;
+    padding: 5px;
+    border-radius: 15px !important;
 }
 .textField{
     height: 100px;
+    width: 200px;
     width: auto;
     
 }
