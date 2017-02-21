@@ -33,11 +33,12 @@ def on_disconnect():
 @socketio.on('new message')
 def on_new_message(data):
     all_messages = models.getChatMessages(1)
-    socketio.emit('all messages',{'messages' : all_messages})
+    socketio.emit('all messages',{'messages' : all_messages},broadcast=True)
     print('message forwarded')
     
-@socketio.on('FB login complete')
-def on_FB_login_complete(data):
+@socketio.on('fb login complete')
+def on_fb_login_complete(data):
+    print(data)
     response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
     json = response.json();
     print(json)
@@ -55,9 +56,9 @@ def on_FB_login_complete(data):
 if __name__ == '__main__':
     socketio.run(
          app,
-         port = int(os.environ.get("PORT")),
+         port=int(os.getenv('PORT')),
          host=os.getenv('IP', '0.0.0.0'),
          debug=True)
-    
+
          
 # mess
