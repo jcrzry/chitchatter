@@ -2,10 +2,11 @@
 import flask_sqlalchemy, app
 from datetime import datetime
 import os
-
+import json
+from flask import jsonify
 # app.app = app modules app variable
-#app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jcrzry:anchor99@localhost/postgres'
-app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jcrzry:anchor99@localhost/postgres'
+# app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = flask_sqlalchemy.SQLAlchemy(app.app)
 
 class chatroom(db.Model):
@@ -34,6 +35,16 @@ class message(db.Model):
         if pubTime is None:
             pubTime = datetime.utcnow()
         self.pubTime = pubTime
+    
+    @property
+    def serialize(self):
+        if self.userID is None:
+            thisUser = "No User"
+        else:
+            thisUser = user.query.get(self.userID)
+        return {'text': self.text, 
+            'user': thisUser.serialize
+        }
         
     def __repr__(self):
         if self.userID is None:
@@ -53,6 +64,11 @@ class user(db.Model):
         self.username = username
         self.imgLink = imgLink
         
+    @property
+    def serialize(self):
+        return {'userID': self.userID, 'link': self.imgLink}
+
+
     def __repr__(self):
         return '<User: {name: %r, imgLink:  %r>' %(self.username,self.imgLink)
         
@@ -62,7 +78,7 @@ def getChatMessages(roomID):
         return "No chatroom specified"
     else:
         allMessages = chatroom.query.get(roomID).roomMessages.all()
-        return allMessages
+        return jsonify(json_list =[i.serialize for i in allMessages])
         
 def userExists(link):
     row = user.query.filter_by(imgLink=link).first()
