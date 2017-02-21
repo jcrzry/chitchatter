@@ -10,12 +10,10 @@ import flask_sqlalchemy
 import requests
 import sys 
 import logging
-
-
-
 app = flask.Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
+users_connected = []
 
 import models
 socketio = flask_socketio.SocketIO(app)
@@ -34,7 +32,7 @@ def on_disconnect():
     
 @socketio.on('new message')
 def on_new_message(data):
-    chat = models.db.chatroom.query(chatroomID = '1')
+    all_messages = models.getChatMessages(1)
     socketio.emit('all messages',{'messages' : all_messages})
     print('message forwarded')
     
@@ -45,7 +43,7 @@ def on_FB_login_complete(data):
     print(json)
     name = json['name']
     link = json['picture']['data']['url']
-    if userExists(link):
+    if models.userExists(link):
         user = models.getUser(link)
         socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}})
     else:
