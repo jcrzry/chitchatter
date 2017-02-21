@@ -47,16 +47,18 @@ def on_FB_login_complete(data):
     link = json['picture']['data']['url']
     if userExists(link):
         user = models.getUser(link)
-        socketio.emit('fb login success', {"isLoggedIn": True, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}})
+        socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}})
     else:
         new_user = models.user(name,link)
-        socketio.emit('fb login success', {"isLoggedIn": True, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink}})
+        socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink}})
+    
+    
     
 if __name__ == '__main__':
     socketio.run(
          app,
+         port = int(os.environ.get("PORT")),
          host=os.getenv('IP', '0.0.0.0'),
-         port=int(os.getenv('PORT')),
          debug=True)
-         
+    
          

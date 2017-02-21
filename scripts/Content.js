@@ -32,7 +32,7 @@ export class Content extends React.Component {
     render() {
         if(this.state.loggedIn){
             let messages = this.state.messages.map(
-            (n,index) => <div className='messageContainer' key={index}>{n} </div>
+            (n,index) => <div className='messageContainer' key={index}>{n.text} </div>
             );
             return(
                 <div>{messages}</div>

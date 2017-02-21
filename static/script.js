@@ -13254,7 +13254,7 @@ var Content = exports.Content = function (_React$Component) {
                     return React.createElement(
                         'div',
                         { className: 'messageContainer', key: index },
-                        n,
+                        n.text,
                         ' '
                     );
                 });
