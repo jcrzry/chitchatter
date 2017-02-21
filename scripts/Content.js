@@ -8,7 +8,7 @@ export class Content extends React.Component {
         super(props);
         this.state = {
             'user': [],
-            'loggedIn': 0,
+            'isLoggedIn': 0,
             'messages': [],
             'chatroomID': 1
         };
@@ -30,7 +30,7 @@ export class Content extends React.Component {
     
 
     render() {
-        if(this.state.loggedIn ===1){
+        if(this.state.isLoggedIn === 1){
             let messages = this.state.messages.map(
             (n,index) => <div className='messageContainer' key={index}>{n.text} </div>
             );

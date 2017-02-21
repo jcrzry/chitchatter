@@ -13222,7 +13222,7 @@ var Content = exports.Content = function (_React$Component) {
 
         _this.state = {
             'user': [],
-            'loggedIn': 0,
+            'isLoggedIn': 0,
             'messages': [],
             'chatroomID': 1
         };
@@ -13249,7 +13249,7 @@ var Content = exports.Content = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.loggedIn === 1) {
+            if (this.state.isLoggedIn === 1) {
                 var messages = this.state.messages.map(function (n, index) {
                     return React.createElement(
                         'div',
