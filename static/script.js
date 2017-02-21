@@ -8640,7 +8640,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
             'chatroomID': 1,
             'value': "",
             'user': [],
-            'isLoggedIn': false
+            'isLoggedIn': 0
         };
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
@@ -8682,7 +8682,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.isLoggedIn) {
+            if (this.state.isLoggedIn === 1) {
                 return React.createElement(
                     'form',
                     { onSubmit: this.handleSubmit },
@@ -13222,7 +13222,7 @@ var Content = exports.Content = function (_React$Component) {
 
         _this.state = {
             'user': [],
-            'loggedIn': false,
+            'loggedIn': 0,
             'messages': [],
             'chatroomID': 1
         };
@@ -13249,7 +13249,7 @@ var Content = exports.Content = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.loggedIn) {
+            if (this.state.loggedIn === 1) {
                 var messages = this.state.messages.map(function (n, index) {
                     return React.createElement(
                         'div',
@@ -13313,7 +13313,7 @@ var FBLoginButton = exports.FBLoginButton = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (FBLoginButton.__proto__ || Object.getPrototypeOf(FBLoginButton)).call(this, props));
 
         _this.state = {
-            'isLoggedIn': false
+            'isLoggedIn': 0
         };
         return _this;
     }

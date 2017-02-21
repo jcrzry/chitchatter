@@ -9,7 +9,7 @@ export class MessageForm extends React.Component {
             'chatroomID':1,
             'value': "",
             'user':[],
-            'isLoggedIn':false
+            'isLoggedIn':0
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -42,7 +42,7 @@ export class MessageForm extends React.Component {
     }
 
     render() {
-        if(this.state.isLoggedIn){
+        if(this.state.isLoggedIn === 1){
            return (
             <form onSubmit={this.handleSubmit}>
                 <textarea value ={this.state.value} onChange = {this.handleChange} placeholder="Enter mesaage.." />

@@ -6,7 +6,7 @@ export class FBLoginButton extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            'isLoggedIn':false
+            'isLoggedIn':0
         }
     }
       render() {
