@@ -37,6 +37,21 @@
     padding: 5px;
     border-radius: 15px !important;
 }
+
+.messageContainerHidden{
+    display: -webkit-flex;
+    flex-direction: row;
+    height: auto;
+    width: 200px;
+    font-family: sans-serif;
+    background-color: rgb(107, 137, 255);
+    alignment-baseline: central;
+    margin-bottom: 25px;
+    border: solid black;
+    padding: 5px;
+    border-radius: 15px !important;
+}
+
 .textField{
     height: 100px;
     width: 200px;

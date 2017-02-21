@@ -9,43 +9,42 @@ export class Content extends React.Component {
         this.state = {
             'user': [],
             'loggedIn': false,
-            'messages': [] 
+            'messages': [],
+            'chatroomID': 1
         };
     }
 
     componentDidMount(){
-    
         Socket.on('all messages',(data) => {
             this.setState({
             'messages' : data['messages']
             });
         });
+        Socket.on('fb login success', (data) =>{
+            this.setState({
+                'isLoggedIn': data['isLoggedIn'],
+                'user':data['user']
+            })
+        })
     }
     
 
     render() {
-        if(!this.state.loggedIn){
-            return (
-                <div>
-                    <div
-                     className="fb-login-button"
-                     data-max-rows="1"
-                     data-size="medium"
-                     data-show-faces="false"
-                     data-auto-logout-link="true">
-                    </div>
-                </div>
+        if(this.state.loggedIn){
+            let messages = this.state.messages.map(
+            (n,index) => <div className='messageContainer' key={index}>{n} </div>
             );
-            
+            return(
+                <div>{messages}</div>
+                );
         }
         else{
-           let messages = this.state.messages.map(
-            (n, index) => <div className ="messageContainer" key={index}>{n}</div>
+            return(
+                <h1>You Must Be Logged In to Participate.</h1>
             );
-            return (
-                    <div>{messages}</div>
-            ); 
         }
         
+            
+       
     }
 }

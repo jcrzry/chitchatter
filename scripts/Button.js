@@ -6,7 +6,10 @@ export class MessageForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            value: ""
+            'chatroomID':1,
+            'value': "",
+            'user':[],
+            'isLoggedIn':false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -22,18 +25,33 @@ export class MessageForm extends React.Component {
              console.log('message', this.state.value)
              Socket.emit('new message', {
             'message': messageText,
-            // 'user' : username
+            'user' : this.state.user['userID'],
+            'roomID':this.state.chatroomID
         });
         }
        
     }
+    componentDidMount(){
+        Socket.on('fb login success', (data) =>{
+            this.setState({
+                'isLoggedIn': data['isLoggedIn'],
+                'user':data['user']
+            })
+        })
+    }
 
     render() {
-        return (
+        if(this.state.isLoggedIn){
+           return (
             <form onSubmit={this.handleSubmit}>
                 <textarea value ={this.state.value} onChange = {this.handleChange} placeholder="Enter mesaage.." />
                 <input type = "submit" value = "Send"/>
             </form>
-        );
+            ); 
+        }
+        else{
+            return null;
+        }
+        
     }
 }

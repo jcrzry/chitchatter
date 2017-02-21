@@ -1,24 +1,25 @@
 # models.py
 import flask_sqlalchemy, app
-import datetime
+from datetime import datetime
 import os
 
 # app.app = app modules app variable
+# app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jcrzry:anchor99@localhost/postgres'
 app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-
 db = flask_sqlalchemy.SQLAlchemy(app.app)
 
 class chatroom(db.Model):
     roomID = db.Column(db.Integer, primary_key = True)
     public = db.Column(db.Boolean, default = True)
     roomName = db.Column(db.String(50))
-    messages = db.relationship('message', backref='chatroom',lazy='dynamic')
+    roomMessages = db.relationship('message', backref=db.backref('chatroom',lazy='joined'),lazy='dynamic')
+    
     
     def __init__(self, roomName, public):
         self.roomName = roomName
         self.public = public
     def __repr__(self):
-        return "<Room: %r>" %self.public
+        return "<Room: {isPublic: %r, Room Name: %r>" %(self.public, self.roomName)
 
 class message(db.Model):
     messID = db.Column(db.Integer, primary_key = True)
@@ -27,25 +28,38 @@ class message(db.Model):
     text = db.Column(db.Text)
     pubTime = db.Column(db.DateTime)
     def __init__(self, roomID, userID, text, pubTime=None):
-        self.message = text
+        self.text = text
+        self.userID = userID
+        self.roomID = roomID
         if pubTime is None:
             pubTime = datetime.utcnow()
         self.pubTime = pubTime
         
     def __repr__(self):
-        return "<User %s, Message %s>" %(self.userID.username,self.message)
+        if self.userID is None:
+            thisUser = "No User"
+        else:
+            thisUser = user.query.get(self.userID)
+        
+        return "<Message: {text: %r, user: %r>" %(self.text, thisUser)
         
 class user(db.Model):
     userID = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(120))
     imgLink = db.Column(db.String(300))
-    messages = db.relationship('message', backref='user',lazy='dynamic')
+    userMessages = db.relationship('message', backref=db.backref('user',lazy='joined'),lazy='dynamic')
     
     def __init__(self, username, imgLink):
         self.username = username
         self.imgLink = imgLink
         
     def __repr__(self):
-        return '<User %s , %s>' %(self.username,self.imgLink)
+        return '<User: {name: %r, imgLink:  %r>' %(self.username,self.imgLink)
         
 
+def getChatMessages(roomID):
+    if roomID is None:
+        return "No chatroom specified"
+    else:
+        allMessages = chatroom.query.get(roomID).roomMessages.all()
+        return allMessages

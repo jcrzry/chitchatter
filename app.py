@@ -9,8 +9,6 @@ import flask_socketio
 import flask_sqlalchemy
 import requests
 
-all_messages = []
-
 app = flask.Flask(__name__)
 import models
 socketio = flask_socketio.SocketIO(app)
@@ -27,11 +25,11 @@ def on_connect():
 def on_disconnect():
     print 'Someone disconnected!'
     
-# @socketio.on('new message')
-# def on_new_message(data):
-#     all_messages.append(data['message'])
-#     socketio.emit('all messages',{'messages' : all_messages})
-#     print('message forwarded')
+@socketio.on('new message')
+def on_new_message(data):
+    chat = models.db.chatroom.query(chatroomID = '1')
+    socketio.emit('all messages',{'messages' : all_messages})
+    print('message forwarded')
     
 @socketio.on('FB login complete')
 def on_FB_login_complete(data):
@@ -43,10 +41,8 @@ def on_FB_login_complete(data):
         new_user = models.user(name,link)
         models.db.session.add(new_user)
         models.db.session.commit()
-    socketio.emit('fb login status', {"isLoggedIn": True})
-    
-    
-    
+    socketio.emit('fb login success', 
+    {"isLoggedIn": True, 'user': {'id': new_user.userID,'name':name,'imgLink':link}})
     
 def userExists(link):
     userSearchResult = models.user.query.filter_by(imgLink = link).first()
