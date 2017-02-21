@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Socket} from './Socket';
+import { Socket } from './Socket';
 
 
 export class FBLoginButton extends React.Component{
@@ -10,13 +10,13 @@ export class FBLoginButton extends React.Component{
         }
     }
       render() {
-          
        FB.getLoginStatus((response) => {
            if (response.status == 'connected') {
                console.log('this is the fb response:',response);
-               Socket.emit('FB login complete', {
-                   'facebook_user_token': response.authResponse.accessToken
+               Socket.emit('fb login complete', {
+                   'facebook_user_token': response.authResponse.accessToken,
                });
+                console.log('token sent to server');
            }
        });
               return (
