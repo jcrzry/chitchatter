@@ -22,8 +22,6 @@ def hello():
 
 @socketio.on('connect')
 def on_connect():
-    all_messages = models.getChatMessages(1)
-    socketio.emit('all messages',{'messages' : all_messages},broadcast=True)
     print 'Someone connected!'
 
 @socketio.on('disconnect')
