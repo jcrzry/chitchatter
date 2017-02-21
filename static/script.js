@@ -13324,7 +13324,7 @@ var FBLoginButton = exports.FBLoginButton = function (_React$Component) {
 
             FB.getLoginStatus(function (response) {
                 if (response.status == 'connected') {
-                    console.log(response);
+                    console.log('this is the fb response:', response);
                     _Socket.Socket.emit('FB login complete', {
                         'facebook_user_token': response.authResponse.accessToken
                     });

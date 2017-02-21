@@ -13,7 +13,7 @@ export class FBLoginButton extends React.Component{
           
        FB.getLoginStatus((response) => {
            if (response.status == 'connected') {
-               console.log(response);
+               console.log('this is the fb response:',response);
                Socket.emit('FB login complete', {
                    'facebook_user_token': response.authResponse.accessToken
                });
