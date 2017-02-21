@@ -8,11 +8,9 @@ import flask
 import flask_socketio
 import flask_sqlalchemy
 import requests
-import sys 
-import logging
+
 app = flask.Flask(__name__)
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.ERROR)
+
 users_connected = []
 
 import models
@@ -38,7 +36,8 @@ def on_new_message(data):
     
 @socketio.on('fb login complete')
 def on_fb_login_complete(data):
-    print(data)
+    print("inside fb login")
+    print(data.json)
     response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
     json = response.json();
     print(json)
