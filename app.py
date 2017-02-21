@@ -8,8 +8,15 @@ import flask
 import flask_socketio
 import flask_sqlalchemy
 import requests
+import sys 
+import logging
+
+
 
 app = flask.Flask(__name__)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
+
 import models
 socketio = flask_socketio.SocketIO(app)
 
