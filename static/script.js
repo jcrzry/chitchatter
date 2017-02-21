@@ -13320,8 +13320,10 @@ var FBLoginButton = exports.FBLoginButton = function (_React$Component) {
     _createClass(FBLoginButton, [{
         key: 'render',
         value: function render() {
+
             FB.getLoginStatus(function (response) {
                 if (response.status == 'connected') {
+                    console.log(response);
                     _Socket.Socket.emit('FB login complete', {
                         'facebook_user_token': response.authResponse.accessToken
                     });
