@@ -2,3 +2,4 @@ Flask
 flask-socketio
 Flask-SQLAlchemy
 requests
+psycopg2
