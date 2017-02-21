@@ -33,6 +33,7 @@ export class MessageForm extends React.Component {
     }
     componentDidMount(){
         Socket.on('fb login success', (data) =>{
+            console.log("button received data: ", data)
             this.setState({
                 'isLoggedIn': data['isLoggedIn'],
                 'user':data['user']

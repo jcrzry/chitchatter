@@ -8672,6 +8672,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
             var _this2 = this;
 
             _Socket.Socket.on('fb login success', function (data) {
+                console.log("button received data: ", data);
                 _this2.setState({
                     'isLoggedIn': data['isLoggedIn'],
                     'user': data['user']
