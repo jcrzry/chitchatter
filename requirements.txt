@@ -1,4 +1,4 @@
 Flask
-flask_socketio
-flask_sqlalchemy
+flask-socketio
+Flask-SQLAlchemy
 requests
