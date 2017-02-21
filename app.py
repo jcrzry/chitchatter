@@ -35,20 +35,15 @@ def on_new_message(data):
 def on_FB_login_complete(data):
     response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
     json = response.json();
+    print(json)
     name = json['name']
     link = json['picture']['data']['url']
-    if not userExists(link):
+    if userExists(link):
+        user = models.getUser(link)
+        socketio.emit('fb login success', {"isLoggedIn": True, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}})
+    else:
         new_user = models.user(name,link)
-        models.db.session.add(new_user)
-        models.db.session.commit()
-    socketio.emit('fb login success', 
-    {"isLoggedIn": True, 'user': {'id': new_user.userID,'name':name,'imgLink':link}})
-    
-def userExists(link):
-    userSearchResult = models.user.query.filter_by(imgLink = link).first()
-    if userSearchResult is None:
-        return False
-    return True
+        socketio.emit('fb login success', {"isLoggedIn": True, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink}})
     
 if __name__ == '__main__':
     socketio.run(

@@ -63,3 +63,13 @@ def getChatMessages(roomID):
     else:
         allMessages = chatroom.query.get(roomID).roomMessages.all()
         return allMessages
+        
+def userExists(link):
+    row = user.query.filter_by(imgLink=link).first()
+    if row is None:
+        return False;
+    else:
+        return True;
+        
+def getUser(link):
+    return user.query.filter_by(imgLink=link).first()
