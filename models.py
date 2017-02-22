@@ -3,11 +3,14 @@ import flask_sqlalchemy, app
 from datetime import datetime
 import os
 import json
-from flask import jsonify
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 # app.app = app modules app variable
 app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jcrzry:anchor99@localhost/postgres'
 # app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = flask_sqlalchemy.SQLAlchemy(app.app)
+ma = Marshmallow(app.app)
 
 class chatroom(db.Model):
     roomID = db.Column(db.Integer, primary_key = True)
@@ -36,15 +39,15 @@ class message(db.Model):
             pubTime = datetime.utcnow()
         self.pubTime = pubTime
     
-    @property
-    def serialize(self):
-        if self.userID is None:
-            thisUser = "No User"
-        else:
-            thisUser = user.query.get(self.userID)
-        return {'text': self.text, 
-            'user': thisUser.serialize
-        }
+    # @property
+    # def serialize(self):
+    #     if self.userID is None:
+    #         thisUser = "No User"
+    #     else:
+    #         thisUser = user.query.get(self.userID)
+    #     return {'text': self.text, 
+    #         'user': thisUser.serialize
+    #     }
         
     def __repr__(self):
         if self.userID is None:
@@ -64,21 +67,34 @@ class user(db.Model):
         self.username = username
         self.imgLink = imgLink
         
-    @property
-    def serialize(self):
-        return {'userID': self.userID, 'link': self.imgLink}
+    # @property
+    # def serialize(self):
+    #     return {'userID': self.userID, 'link': self.imgLink}
 
 
     def __repr__(self):
         return '<User: {name: %r, imgLink:  %r>' %(self.username,self.imgLink)
+    
+###########################################################################################
+###########################################################################################
+class messageSchema(ma.ModelSchema):
+    class Meta:
+        model = message
         
-
+class userSchema(ma.ModelSchema):
+    class Meta:
+        model = user
+        
+        
+###########################################################################################
+###########################################################################################        
 def getChatMessages(roomID):
     if roomID is None:
         return "No chatroom specified"
     else:
         allMessages = chatroom.query.get(roomID).roomMessages.all()
-        return jsonify(json_list =[i.serialize for i in allMessages])
+        mess_Scheme = messageSchema()
+        return {'all_messages' : [mess_Scheme.dump(i).data for i in allMessages]}
         
 def userExists(link):
     row = user.query.filter_by(imgLink=link).first()

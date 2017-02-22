@@ -1,5 +1,7 @@
 Flask
 flask-socketio
 Flask-SQLAlchemy
+flask-marshmallow
+marshmallow-sqlalchemy
 requests
 psycopg2
