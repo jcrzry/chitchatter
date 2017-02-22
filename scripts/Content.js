@@ -16,7 +16,7 @@ export class Content extends React.Component {
     componentDidMount(){
         Socket.on('all messages',(data) => {
             this.setState({
-            'messages' : data['messages']
+            'messages' : data['messages']['all_messages']
             });
         });
         

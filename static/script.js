@@ -13238,7 +13238,7 @@ var Content = exports.Content = function (_React$Component) {
 
             _Socket.Socket.on('all messages', function (data) {
                 _this2.setState({
-                    'messages': data['messages']
+                    'messages': data['messages']['all_messages']
                 });
             });
 
