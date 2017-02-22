@@ -1,12 +1,13 @@
 .body{
     height: 900px;
-    background-image:url(https://remotelyinterestingtv.files.wordpress.com/2011/03/work-6368521-1-fc550x550creme-v3.jpg);
-    background-repeat:no-repeat;
-    background-size: 100%;
+   
 }
 .container{
     display: -webkit-flex;
     flex-direction: row;
+    background-image:url(https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/90605028770039.55d1cd8ee8d36.jpg);
+    background-repeat:no-repeat;
+    background-size: 100%;
     
 }
 
@@ -34,7 +35,7 @@
     height: auto;
     width: 200px;
     font-family: sans-serif;
-    background-color: rgb(107, 137, 255);
+    background-color: rgba(107, 137, 255,0.5);
     alignment-baseline: central;
     margin-bottom: 25px;
     border: solid black;

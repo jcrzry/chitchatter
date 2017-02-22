@@ -7,8 +7,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 # app.app = app modules app variable
-app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jcrzry:anchor99@localhost/postgres'
-# app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+#app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jcrzry:anchor99@localhost/postgres'
+app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = flask_sqlalchemy.SQLAlchemy(app.app)
 ma = Marshmallow(app.app)
 
@@ -114,4 +114,9 @@ def addMessage(roomID, userID, text, pubTime=None):
         db.session.add(new_message)
         db.session.commit()
         
-            
+def addUser(name,link):
+    new_user = user(name,link)
+    db.session.add(new_user)
+    db.session.commit()
+    return new_user
+    

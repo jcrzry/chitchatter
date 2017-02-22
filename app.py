@@ -44,12 +44,16 @@ def on_fb_login_complete(data):
     name = json['name']
     link = json['picture']['data']['url']
     all_messages = models.getChatMessages(1)
+    print(all_messages)
     if models.userExists(link):
         user = models.getUser(link)
         socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}, 'messages':all_messages})
+        socketio.emit('fb login success content', {"isLoggedIn": 1, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}, 'messages':all_messages})
+
     else:
-        new_user = models.user(name,link)
+        new_user = models.addUser(name,link)
         socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink},'messages':all_messages})
+        socketio.emit('fb login success content', {"isLoggedIn": 1, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink},'messages':all_messages})
     
     
 if __name__ == '__main__':
@@ -61,3 +65,4 @@ if __name__ == '__main__':
 
          
 # mess
+
