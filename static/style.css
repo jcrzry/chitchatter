@@ -35,7 +35,7 @@
     height: auto;
     width: 200px;
     font-family: sans-serif;
-    background-color: rgba(107, 137, 255,0.5);
+    background: rgba(107, 137, 255,0.5);
     alignment-baseline: central;
     margin-bottom: 25px;
     border: solid black;
