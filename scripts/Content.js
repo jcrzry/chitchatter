@@ -7,7 +7,7 @@ export class Content extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'user': [],
+            'user': 0,
             'isLoggedIn': 0,
             'messages': [],
             'chatroomID': 1
@@ -21,9 +21,11 @@ export class Content extends React.Component {
             });
         });
         Socket.on('fb login success', (data) =>{
+            console.log("Content received data:", data)
             this.setState({
                 'isLoggedIn': data['isLoggedIn'],
-                'user':data['user']
+                'user':data['user'],
+                'messages' : data['messages']
             })
         })
     }
@@ -32,7 +34,8 @@ export class Content extends React.Component {
     render() {
         if(this.state.isLoggedIn === 1){
             let messages = this.state.messages.map(
-            (n,index) => <div className='messageContainer' key={index}>{n.text} </div>
+            (n,index) => <div className='messageContainer' key={index}><div>{n['user']}</div>
+            <div>{n['text']} </div></div>
             );
             return(
                 <div>{messages}</div>

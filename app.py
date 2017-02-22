@@ -30,6 +30,7 @@ def on_disconnect():
     
 @socketio.on('new message')
 def on_new_message(data):
+    models.addMessage(data['roomID'],data['userID'],data['message'])
     all_messages = models.getChatMessages(1)
     socketio.emit('all messages',{'messages' : all_messages},broadcast=True)
     print('message forwarded')
@@ -42,19 +43,19 @@ def on_fb_login_complete(data):
     print(json)
     name = json['name']
     link = json['picture']['data']['url']
+    all_messages = models.getChatMessages(1)
     if models.userExists(link):
         user = models.getUser(link)
-        socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}})
+        socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}, 'messages':all_messages})
     else:
         new_user = models.user(name,link)
-        socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink}})
-    
+        socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink},'messages':all_messages})
     
     
 if __name__ == '__main__':
     socketio.run(
          app,
-         port=int(os.getenv('PORT')),
+         port=int(os.getenv('PORT',8080)),
          host=os.getenv('IP', '0.0.0.0'),
          debug=True)
 

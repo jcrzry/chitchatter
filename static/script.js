@@ -8639,7 +8639,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
         _this.state = {
             'chatroomID': 1,
             'value': "",
-            'user': [],
+            'userID': 0,
             'isLoggedIn': 0
         };
         _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -8661,7 +8661,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
                 console.log('message', this.state.value);
                 _Socket.Socket.emit('new message', {
                     'message': messageText,
-                    'user': this.state.user['userID'],
+                    'userID': this.state.user['userID'],
                     'roomID': this.state.chatroomID
                 });
             }
@@ -8675,7 +8675,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
                 console.log("button received data: ", data);
                 _this2.setState({
                     'isLoggedIn': data['isLoggedIn'],
-                    'user': data['user']
+                    'userID': data['user']
                 });
             });
         }
@@ -13221,7 +13221,7 @@ var Content = exports.Content = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
 
         _this.state = {
-            'user': [],
+            'user': 0,
             'isLoggedIn': 0,
             'messages': [],
             'chatroomID': 1
@@ -13240,9 +13240,11 @@ var Content = exports.Content = function (_React$Component) {
                 });
             });
             _Socket.Socket.on('fb login success', function (data) {
+                console.log("Content received data:", data);
                 _this2.setState({
                     'isLoggedIn': data['isLoggedIn'],
-                    'user': data['user']
+                    'user': data['user'],
+                    'messages': data['messages']
                 });
             });
         }
@@ -13254,8 +13256,17 @@ var Content = exports.Content = function (_React$Component) {
                     return React.createElement(
                         'div',
                         { className: 'messageContainer', key: index },
-                        n.text,
-                        ' '
+                        React.createElement(
+                            'div',
+                            null,
+                            n['user']
+                        ),
+                        React.createElement(
+                            'div',
+                            null,
+                            n['text'],
+                            ' '
+                        )
                     );
                 });
                 return React.createElement(

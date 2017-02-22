@@ -1,5 +1,8 @@
 .body{
     height: 900px;
+    background-image:url(https://remotelyinterestingtv.files.wordpress.com/2011/03/work-6368521-1-fc550x550creme-v3.jpg);
+    background-repeat:no-repeat;
+    background-size: 100%;
 }
 .container{
     display: -webkit-flex;
@@ -8,6 +11,7 @@
 }
 
 .messageFrame{
+    border:solid black;
     display: -webkit-flex;
     flex-direction: column;
     overflow-y: auto;
@@ -38,23 +42,18 @@
     border-radius: 15px !important;
 }
 
-.messageContainerHidden{
-    display: -webkit-flex;
-    flex-direction: row;
-    height: auto;
-    width: 200px;
-    font-family: sans-serif;
-    background-color: rgb(107, 137, 255);
-    alignment-baseline: central;
-    margin-bottom: 25px;
-    border: solid black;
-    padding: 5px;
-    border-radius: 15px !important;
-}
 
 .textField{
     height: 100px;
     width: 200px;
     width: auto;
+    
+}
+
+
+.userImg{
+    border-radius:50%;
+    height:50px;
+    width:50px;
     
 }

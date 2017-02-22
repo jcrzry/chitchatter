@@ -8,7 +8,7 @@ export class MessageForm extends React.Component {
         this.state = {
             'chatroomID':1,
             'value': "",
-            'user':[],
+            'userID':0,
             'isLoggedIn':0
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,7 +25,7 @@ export class MessageForm extends React.Component {
              console.log('message', this.state.value)
              Socket.emit('new message', {
             'message': messageText,
-            'user' : this.state.user['userID'],
+            'userID' : this.state.user['userID'],
             'roomID':this.state.chatroomID
         });
         }
@@ -36,7 +36,7 @@ export class MessageForm extends React.Component {
             console.log("button received data: ", data)
             this.setState({
                 'isLoggedIn': data['isLoggedIn'],
-                'user':data['user']
+                'userID':data['user']
             })
         })
     }

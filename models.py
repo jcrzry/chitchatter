@@ -94,7 +94,10 @@ def getChatMessages(roomID):
     else:
         allMessages = chatroom.query.get(roomID).roomMessages.all()
         mess_Scheme = messageSchema()
-        return {'all_messages' : [mess_Scheme.dump(i).data for i in allMessages]}
+        all_messages = []
+        for i in allMessages:
+            all_messages.append( mess_Scheme.dump(i).data)
+        return {'all_messages' : all_messages}
         
 def userExists(link):
     row = user.query.filter_by(imgLink=link).first()
@@ -105,3 +108,10 @@ def userExists(link):
         
 def getUser(link):
     return user.query.filter_by(imgLink=link).first()
+    
+def addMessage(roomID, userID, text, pubTime=None):
+        new_message = message(roomID,userID,text,pubTime=None)
+        db.session.add(new_message)
+        db.session.commit()
+        
+            
