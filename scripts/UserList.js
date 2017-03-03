@@ -4,31 +4,40 @@ import {Socket} from './Socket';
 
 
 export class UserList extends React.Component{
-    consructor(props){
+    constructor(props){
         super(props);
         this.state ={
-            'users':[]
-        }
+            'connected_ users':[]
+        };
+    }
+    
+    componentDidMount(){
+        Socket.on('fb login success', (data) => {
+            this.setState({
+                'connected_users' :  data['connected_users']
+            });
+        });
     }
     
     
-    
-    
-    
-    
-    
     render(){
-        let currentUsers = this.state.users.map(
-             (n, index) => <div key={index}>{n}</div>
+        if(this.state.connected_users != undefined){
+            let currentUsers = this.state.connected_users.map(
+             (n, index) => <div className = 'userContainer' key={index}>
+             <img className = 'userImg'src={n['imgLink']}/>
+             <div>{n['username']}</div>
+             </div>
              );
-        return(
-             
-            <div>
-                {currentUsers}
-            </div>
-            )
-            
-        
+            return(
+                 
+                <div>
+                    {currentUsers}
+                </div>
+            )}
+            else{
+                return(
+                    <h2> No Users Online </h2>
+                    )}
     }
     
     

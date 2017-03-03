@@ -15,12 +15,13 @@ export class Content extends React.Component {
 
     componentDidMount(){
         Socket.on('all messages',(data) => {
+            console.log("messages received:", data['messages']['all_messages'])
             this.setState({
             'messages' : data['messages']['all_messages']
             });
         });
         
-        Socket.on('fb login success content', (data) => {
+        Socket.on('login success', (data) => {
             console.log("Content received data:", data)
             this.setState({
                 'isLoggedIn': data['isLoggedIn'],
@@ -34,8 +35,12 @@ export class Content extends React.Component {
     render() {
         if(this.state.isLoggedIn === 1){
             let messages = this.state.messages.map(
-            (n,index) => <div key={index} className='messageContainer'><div>{n['user']}</div>
-            <div>{n['text']} </div>
+            (n,index) => <div className = 'messageContainer'key={index}>
+            <div className = 'userContainer'>
+                <img className='userImg' src={n['user']['imgLink']}/>
+                <div>{n['user']['username']}</div>
+                </div>
+            <div className = 'messageTextContainer'>{n['text']} </div>
             </div>
             );
             return(

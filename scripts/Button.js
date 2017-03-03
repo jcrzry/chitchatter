@@ -8,7 +8,7 @@ export class MessageForm extends React.Component {
         this.state = {
             'chatroomID':1,
             'value': "",
-            'user':[],
+            'user':{},
             'isLoggedIn':0,
             'messages': []
         };
@@ -20,25 +20,26 @@ export class MessageForm extends React.Component {
     }
     
     handleSubmit(event) {
+        console.log("userID",this.state.user['userID']);
         let messageText = this.state.value;
         event.preventDefault();
         if(this.state.value.trim() !== ""){
              console.log('message:', this.state.value)
              Socket.emit('new message', {
             'message': messageText,
-            'userID' : this.state.user['id'],
+            'userID' : this.state.user['userID'],
             'roomID':this.state.chatroomID
         });
         }
        
     }
     componentDidMount(){
-        Socket.on('fb login success', (data) => {
+        Socket.on('login success', (data) => {
             console.log("button received data: ", data)
             this.setState({
                 'isLoggedIn': data['isLoggedIn'],
-                'user':data['user'],
-                'messages':data['all_messages']
+                'user': data['user'],
+                'messages': data['all_messages']
             })
         })
     }

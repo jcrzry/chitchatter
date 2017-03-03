@@ -8,16 +8,18 @@
     background-image:url(https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/90605028770039.55d1cd8ee8d36.jpg);
     background-repeat:no-repeat;
     background-size: 100%;
+    align-items: center;
     
 }
 
 .messageFrame{
+    background-color: rgba(235, 234, 235, .6);
     border:solid black;
     display: -webkit-flex;
     flex-direction: column;
     overflow-y: auto;
     height: 600px;
-    width: 500px;
+    width: 800px;
     align-items: center;
     
 }
@@ -25,17 +27,26 @@
     display: -webkit-flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 200px;
+    width: 200px;
+    height: 700px;
     align-items: center;
 }
 
 .messageContainer{
-    display: -webkit-flex;
+    display: --webkit-flex;
     flex-direction: row;
+    width:400px;
     height: auto;
-    width: 200px;
+    align-items: center;
+    padding:10px;
+}
+.messageTextContainer{
+    /*display: -webkit-flex;*/
+    /*flex-direction: row;*/
+    height: auto;
+    width: 250px;
     font-family: sans-serif;
-    background: rgba(107, 137, 255,0.5);
+    background: rgba(107, 137, 255,0.6);
     alignment-baseline: central;
     margin-bottom: 25px;
     border: solid black;
@@ -51,8 +62,14 @@
     
 }
 
+.userContainer{
+    display: -webkit-flex;
+    flex-direction:column;
+    margin: auto;
+}
 
 .userImg{
+    display: --webkit-flex;
     border-radius:50%;
     height:50px;
     width:50px;

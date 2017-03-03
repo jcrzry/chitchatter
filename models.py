@@ -6,9 +6,14 @@ import json
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from marshmallow import fields
+from sqlalchemy import orm
+
+
+
 # app.app = app modules app variable
-#app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jcrzry:anchor99@localhost/postgres'
-app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jcrzry:anchor99@localhost/postgres'
+# app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = flask_sqlalchemy.SQLAlchemy(app.app)
 ma = Marshmallow(app.app)
 
@@ -77,14 +82,21 @@ class user(db.Model):
     
 ###########################################################################################
 ###########################################################################################
-class messageSchema(ma.ModelSchema):
-    class Meta:
-        model = message
-        
+
 class userSchema(ma.ModelSchema):
     class Meta:
         model = user
         
+
+# Session = orm.scoped_session(orm.sessionmaker())
+# Session.configure(bind=engine)
+
+class messageSchema(ma.ModelSchema):
+    
+    class Meta:
+        model = message
+    user = fields.Nested(userSchema, many=False)
+
         
 ###########################################################################################
 ###########################################################################################        
@@ -96,7 +108,7 @@ def getChatMessages(roomID):
         mess_Scheme = messageSchema()
         all_messages = []
         for i in allMessages:
-            all_messages.append( mess_Scheme.dump(i).data)
+            all_messages.append(mess_Scheme.dump(i).data)
         return {'all_messages' : all_messages}
         
 def userExists(link):
@@ -107,7 +119,16 @@ def userExists(link):
         return True;
         
 def getUser(link):
-    return user.query.filter_by(imgLink=link).first()
+    user_Schema = userSchema()
+    result_user = user.query.filter_by(imgLink=link).first()
+    userDump = user_Schema.dump(result_user)
+    return userDump[0]
+    
+def getUserByID(userID):
+    user_Schema = userSchema()
+    result_user = user.query.get(userID)
+    userDump = user_Schema.dump(result_user)
+    return userDump[0]
     
 def addMessage(roomID, userID, text, pubTime=None):
         new_message = message(roomID,userID,text,pubTime=None)

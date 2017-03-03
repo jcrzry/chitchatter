@@ -8639,7 +8639,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
         _this.state = {
             'chatroomID': 1,
             'value': "",
-            'user': [],
+            'user': {},
             'isLoggedIn': 0,
             'messages': []
         };
@@ -8656,13 +8656,14 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
     }, {
         key: 'handleSubmit',
         value: function handleSubmit(event) {
+            console.log("userID", this.state.user['userID']);
             var messageText = this.state.value;
             event.preventDefault();
             if (this.state.value.trim() !== "") {
                 console.log('message:', this.state.value);
                 _Socket.Socket.emit('new message', {
                     'message': messageText,
-                    'userID': this.state.user['id'],
+                    'userID': this.state.user['userID'],
                     'roomID': this.state.chatroomID
                 });
             }
@@ -8672,7 +8673,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            _Socket.Socket.on('fb login success', function (data) {
+            _Socket.Socket.on('login success', function (data) {
                 console.log("button received data: ", data);
                 _this2.setState({
                     'isLoggedIn': data['isLoggedIn'],
@@ -13237,12 +13238,13 @@ var Content = exports.Content = function (_React$Component) {
             var _this2 = this;
 
             _Socket.Socket.on('all messages', function (data) {
+                console.log("messages received:", data['messages']['all_messages']);
                 _this2.setState({
                     'messages': data['messages']['all_messages']
                 });
             });
 
-            _Socket.Socket.on('fb login success content', function (data) {
+            _Socket.Socket.on('login success', function (data) {
                 console.log("Content received data:", data);
                 _this2.setState({
                     'isLoggedIn': data['isLoggedIn'],
@@ -13258,15 +13260,20 @@ var Content = exports.Content = function (_React$Component) {
                 var messages = this.state.messages.map(function (n, index) {
                     return React.createElement(
                         'div',
-                        { key: index, className: 'messageContainer' },
+                        { className: 'messageContainer', key: index },
                         React.createElement(
                             'div',
-                            null,
-                            n['user']
+                            { className: 'userContainer' },
+                            React.createElement('img', { className: 'userImg', src: n['user']['imgLink'] }),
+                            React.createElement(
+                                'div',
+                                null,
+                                n['user']['username']
+                            )
                         ),
                         React.createElement(
                             'div',
-                            null,
+                            { className: 'messageTextContainer' },
                             n['text'],
                             ' '
                         )
@@ -13303,7 +13310,7 @@ var Content = exports.Content = function (_React$Component) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.FBLoginButton = undefined;
+exports.LoginButtons = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -13321,46 +13328,98 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var FBLoginButton = exports.FBLoginButton = function (_React$Component) {
-    _inherits(FBLoginButton, _React$Component);
+var LoginButtons = exports.LoginButtons = function (_React$Component) {
+    _inherits(LoginButtons, _React$Component);
 
-    function FBLoginButton(props) {
-        _classCallCheck(this, FBLoginButton);
+    function LoginButtons(props) {
+        _classCallCheck(this, LoginButtons);
 
-        var _this = _possibleConstructorReturn(this, (FBLoginButton.__proto__ || Object.getPrototypeOf(FBLoginButton)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (LoginButtons.__proto__ || Object.getPrototypeOf(LoginButtons)).call(this, props));
 
         _this.state = {
-            'isLoggedIn': 0
+            'isLoggedIn': 0,
+            'loggedInFrom': 'none'
         };
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
 
-    _createClass(FBLoginButton, [{
-        key: 'render',
-        value: function render() {
+    _createClass(LoginButtons, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            _Socket.Socket.on('login success', function (data) {
+                console.log('data', data);
+                _this2.setState({
+                    'isLoggedIn': data['isLoggedIn'],
+                    'loggedInFrom': data['loggedInFrom']
+                });
+            });
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
             FB.getLoginStatus(function (response) {
                 if (response.status == 'connected') {
                     console.log('this is the fb response:', response);
-                    _Socket.Socket.emit('fb login complete', {
-                        'facebook_user_token': response.authResponse.accessToken
+                    _Socket.Socket.emit('login complete', {
+                        'fb_user_token': response.authResponse.accessToken,
+                        'google_user_token': ''
                     });
                     console.log('token sent to server');
+                } else {
+                    var auth = gapi.auth2.getAuthInstance();
+                    var user = auth.currentUser.get();
+                    if (user.isSignedIn()) {
+                        console.log("this is the google response:", user.getAuthResponse());
+                        _Socket.Socket.emit('login complete', {
+                            'google_user_token': user.getAuthResponse().id_token,
+                            'fb_user_token': ''
+                        });
+                    }
                 }
             });
-            return React.createElement(
-                'div',
-                null,
-                React.createElement('div', {
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (!this.state.isLoggedIn) {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement('div', {
+                        className: 'fb-login-button',
+                        'data-max-rows': '1',
+                        'data-size': 'medium',
+                        'data-show-faces': 'false',
+                        'data-auto-logout-link': 'true' }),
+                    React.createElement('div', {
+                        className: 'g-signin2',
+                        'data-theme': 'dark' }),
+                    React.createElement(
+                        'form',
+                        { onSubmit: this.handleSubmit },
+                        React.createElement('input', { type: 'submit', value: 'Go to Chat' })
+                    )
+                );
+            } else if (this.state.loggedInFrom === 'fb') {
+                return React.createElement('div', {
                     className: 'fb-login-button',
                     'data-max-rows': '1',
                     'data-size': 'medium',
                     'data-show-faces': 'false',
-                    'data-auto-logout-link': 'true' })
-            );
+                    'data-auto-logout-link': 'true' });
+            } else if (this.state.loggedInFrom === 'google') {
+                return React.createElement('div', {
+                    className: 'g-signin2',
+                    'data-theme': 'dark' });
+            }
         }
     }]);
 
-    return FBLoginButton;
+    return LoginButtons;
 }(React.Component);
 
 /***/ }),
@@ -30395,11 +30454,101 @@ var _Content = __webpack_require__(106);
 
 var _Login = __webpack_require__(107);
 
+var _UserList = __webpack_require__(234);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ReactDOM.render(React.createElement(_Login.FBLoginButton, null), document.getElementById('fbButton'));
+ReactDOM.render(React.createElement(_Login.LoginButtons, null), document.getElementById('fbButton'));
+ReactDOM.render(React.createElement(_UserList.UserList, null), document.getElementById('userList'));
 ReactDOM.render(React.createElement(_Content.Content, null), document.getElementById('messageCenter'));
 ReactDOM.render(React.createElement(_Button.MessageForm, null), document.getElementById('txtFld'));
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.UserList = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(28);
+
+var React = _interopRequireWildcard(_react);
+
+var _Socket = __webpack_require__(38);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var UserList = exports.UserList = function (_React$Component) {
+    _inherits(UserList, _React$Component);
+
+    function UserList(props) {
+        _classCallCheck(this, UserList);
+
+        var _this = _possibleConstructorReturn(this, (UserList.__proto__ || Object.getPrototypeOf(UserList)).call(this, props));
+
+        _this.state = {
+            'connected_ users': []
+        };
+        return _this;
+    }
+
+    _createClass(UserList, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            _Socket.Socket.on('fb login success', function (data) {
+                _this2.setState({
+                    'connected_users': data['connected_users']
+                });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (this.state.connected_users != undefined) {
+                var currentUsers = this.state.connected_users.map(function (n, index) {
+                    return React.createElement(
+                        'div',
+                        { className: 'userContainer', key: index },
+                        React.createElement('img', { className: 'userImg', src: n['imgLink'] }),
+                        React.createElement(
+                            'div',
+                            null,
+                            n['username']
+                        )
+                    );
+                });
+                return React.createElement(
+                    'div',
+                    null,
+                    currentUsers
+                );
+            } else {
+                return React.createElement(
+                    'h2',
+                    null,
+                    ' No Users Online '
+                );
+            }
+        }
+    }]);
+
+    return UserList;
+}(React.Component);
 
 /***/ })
 /******/ ]);

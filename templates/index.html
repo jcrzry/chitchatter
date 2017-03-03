@@ -3,12 +3,16 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <Title>chit-chatter</Title>
+        <meta name="google-signin-scope" content="profile email" />
+        <meta name="google-signin-client_id" content="10385589691-cl4r25k0n5ui7gjgm6q5vhudonq1h1at.apps.googleusercontent.com" />
+        <script src="https://apis.google.com/js/platform.js" async defer>
+        </script>
     </head>
     <body>
         <script>
             window.fbAsyncInit = function() {
                 FB.init({
-                    appId: '198187570657818',
+                    appId: '415501412125547',
                     cookie: true,
                     xfbml: true,
                     version: 'v2.8'
@@ -32,6 +36,9 @@
                 <div id ='fbButton'></div>
         </div>
         <div class = "container">
+            <div class ="userFrame" id="userList">
+                
+            </div>
             <div style = "display:-webkit-flex;flex-direction:column;">
                 <div class = "messageFrame" id = "messageCenter">
                 <!--this is where the messages will populate-->
@@ -41,9 +48,6 @@
                     <!--<input type="textarea" name="messageText"/>-->
                     
                 </div>
-            </div>
-            <div class ="userFrame">
-                
             </div>
         </div>
         <script type="text/javascript" src="/static/script.js"></script>

@@ -30,32 +30,56 @@ def on_disconnect():
     
 @socketio.on('new message')
 def on_new_message(data):
+    print("********************************************",data['userID'])
+    print("********************************************",data['message'])
     models.addMessage(data['roomID'],data['userID'],data['message'])
     all_messages = models.getChatMessages(1)
-    socketio.emit('all messages',{'messages' : all_messages},broadcast=True)
+    # print('connected users:', users_connected)
+    socketio.emit('all messages',{'messages' : all_messages,'connected users': users_connected},broadcast=True)
     print('message forwarded')
-    
-@socketio.on('fb login complete')
-def on_fb_login_complete(data):
-    print("inside fb login")
-    response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
-    json = response.json();
-    print(json)
-    name = json['name']
-    link = json['picture']['data']['url']
+
+
+# ***********************************************************************************************************************************************************************
+# ***********************************************************************************************************************************************************************
+# ****************************LOGIN COMPLETE*****************************************************************************************************************************
+# ***********************************************************************************************************************************************************************
+# ***********************************************************************************************************************************************************************
+@socketio.on('login complete')
+def on_login_complete(data):
+    # print("inside fb login")
+    if data['fb_user_token']:
+        loggedInFrom = 'fb'
+        response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['facebook_user_token'])
+        json = response.json()
+        name = json['name']
+        link = json['picture']['data']['url']
+        
+    elif data['google_user_token']:
+        loggedInFrom = 'google'
+        response = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + data['google_user_token'])
+        json = response.json()
+        name = (json['given_name'] + " " + json['family_name'])
+        link = json['picture']
     all_messages = models.getChatMessages(1)
-    print(all_messages)
+    # print(all_messages)
     if models.userExists(link):
         user = models.getUser(link)
-        socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}, 'messages':all_messages})
-        socketio.emit('fb login success content', {"isLoggedIn": 1, 'user': {'id': user.userID,'name':user.username,'imgLink':user.imgLink}, 'messages':all_messages})
-
+        if user not in users_connected:
+            users_connected.append(user)
+        socketio.emit('login success', {"isLoggedIn": 1,'loggedInFrom':loggedInFrom, 'user': user, 'messages':all_messages, 'connected_users':users_connected})
     else:
         new_user = models.addUser(name,link)
-        socketio.emit('fb login success', {"isLoggedIn": 1, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink},'messages':all_messages})
-        socketio.emit('fb login success content', {"isLoggedIn": 1, 'user': {'id': new_user.userID,'name': new_user.username,'imgLink': new_user.imgLink},'messages':all_messages})
-    
-    
+        nu_ = models.getUserByID(new_user.userID)
+        if new_user not in users_connected:
+            users_connected.append(nu_)
+        socketio.emit('login success', {"isLoggedIn": 1, 'loggedInFrom':loggedInFrom,'user': nu_,'messages':all_messages,'connected_users':users_connected})
+        
+# ***********************************************************************************************************************************************************************
+# ***********************************************************************************************************************************************************************
+# **************************END LOGIN COMPLETE***************************************************************************************************************************
+# ***********************************************************************************************************************************************************************
+# ***********************************************************************************************************************************************************************
+
 if __name__ == '__main__':
     socketio.run(
          app,
