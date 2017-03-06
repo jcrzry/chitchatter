@@ -13296,12 +13296,7 @@ var Content = exports.Content = function (_React$Component) {
                                 n['user']['username']
                             )
                         ),
-                        React.createElement(
-                            'div',
-                            { className: 'messageTextContainer' },
-                            n['text'],
-                            ' '
-                        )
+                        React.createElement('div', { className: 'messageTextContainer', dangerouslySetInnerHTML: { __html: n['text'] } })
                     );
                 });
                 return (

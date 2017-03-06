@@ -15,14 +15,14 @@ export class Content extends React.Component {
 
     componentDidMount(){
         Socket.on('all messages',(data) => {
-            console.log("messages received:", data['messages']['all_messages'])
+            console.log("messages received:", data['messages']['all_messages']);
             this.setState({
             'messages' : data['messages']['all_messages']
             });
         });
         
         Socket.on('login success', (data) => {
-            console.log("Content received data:", data)
+            console.log("Content received data:", data);
             this.setState({
                 'isLoggedIn': data['isLoggedIn'],
                 'user':data['user'],
@@ -40,9 +40,9 @@ export class Content extends React.Component {
                 'isLoggedIn' : data['isLoggedIn']
             });
         });
+        
     }
     
-
     render() {
         if(this.state.isLoggedIn === 1){
             let messages = this.state.messages.map(
@@ -51,7 +51,8 @@ export class Content extends React.Component {
                 <img className='userImg' src={n['user']['imgLink']}/>
                 <div>{n['user']['username']}</div>
                 </div>
-            <div className = 'messageTextContainer'>{n['text']} </div>
+                
+            <div className = 'messageTextContainer' dangerouslySetInnerHTML={{__html: n['text']}}></div>
             </div>
             );
             return(

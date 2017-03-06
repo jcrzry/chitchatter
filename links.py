@@ -20,7 +20,7 @@ def isImage(link):
     
 def returnLink(link, flag):
     if flag == True:
-        return "<img src ='" + link + "'/>"
+        return "<img class ='submittedImg' src='" + link + "'/>"
     else:
         return "<a href='" + link +"'>"+ link +"</a>"
 

@@ -61,14 +61,14 @@ def on_new_message(data):
 def on_login_complete(data):
     # print("inside fb login")
     if data['fb_user_token']:
-        loggedInFrom = 'facebook'
+        loggedInFrom = 'Facebook'
         response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['fb_user_token'])
         json = response.json()
         name = json['name']
         link = json['picture']['data']['url']
         
     elif data['google_user_token']:
-        loggedInFrom = 'google'
+        loggedInFrom = 'Google'
         response = requests.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + data['google_user_token'])
         json = response.json()
         name = (json['given_name'] + " " + json['family_name'])

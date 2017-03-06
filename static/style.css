@@ -54,13 +54,13 @@
     /*display: -webkit-flex;*/
     /*flex-direction: row;*/
     height: auto;
-    width: 250px;
+    width: 450px;
     font-family: sans-serif;
     background: rgba(107, 137, 255,0.6);
     /*align-self: flex-end;*/
     margin-bottom: 25px;
     border: solid black;
-    padding: 5px;
+    padding: 15px;
     border-radius: 15px !important;
 }
 
@@ -88,4 +88,9 @@
 
 .h1{
     border-bottom: 5px solid black;
+}
+
+.submittedImg{
+    height: 50%;
+    width: 70%;
 }
