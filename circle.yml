@@ -8,3 +8,8 @@ deployment:
         branch: master
         heroku:
             appname: chit-chatter
+            
+machine:
+    environment:
+        parksKey : 313A6491-C8D5-4791-B9EC-B236856FCDEB
+        DATABASE_URL: postgresql://jcrzry:anchor99@localhost/postgres
