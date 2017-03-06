@@ -11,7 +11,7 @@ class ServerIntegrationTest(flask_testing.LiveServerTestCase):
         resp = urllib2.urlopen(self.get_server_url())
         
         # 200 code means connection was ok
-        self.assertEquals(resp.code,"200") 
+        self.assertEquals(resp.code,200) 
         
 if __name__ == '__main__':
     unittest.main()
