@@ -8656,15 +8656,18 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
     }, {
         key: 'handleSubmit',
         value: function handleSubmit(event) {
+            event.preventDefault();
             console.log("userID", this.state.user['userID']);
             var messageText = this.state.value;
-            event.preventDefault();
-            if (this.state.value.trim() !== "") {
+            if (messageText.trim() !== "") {
                 console.log('message:', this.state.value);
                 _Socket.Socket.emit('new message', {
                     'message': messageText,
                     'userID': this.state.user['userID'],
                     'roomID': this.state.chatroomID
+                });
+                this.setState({
+                    'value': ''
                 });
             }
         }
@@ -8681,6 +8684,17 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
                     'messages': data['all_messages']
                 });
             });
+            _Socket.Socket.on('someone left', function (data) {
+                _this2.setState({
+                    'connected_users': data['connected_users'],
+                    'numberOfUsers': data['numberOfUsers']
+                });
+            });
+            _Socket.Socket.on('i left', function (data) {
+                _this2.setState({
+                    'isLoggedIn': data['isLoggedIn']
+                });
+            });
         }
     }, {
         key: 'render',
@@ -8689,7 +8703,7 @@ var MessageForm = exports.MessageForm = function (_React$Component) {
                 return React.createElement(
                     'form',
                     { onSubmit: this.handleSubmit },
-                    React.createElement('textarea', { value: this.state.value, onChange: this.handleChange, placeholder: 'Enter mesaage..' }),
+                    React.createElement('textarea', { className: 'textField', value: this.state.value, onChange: this.handleChange, placeholder: 'Enter mesaage..' }),
                     React.createElement('input', { type: 'submit', value: 'Send' })
                 );
             } else {
