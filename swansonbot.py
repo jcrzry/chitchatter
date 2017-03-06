@@ -39,7 +39,6 @@ def botResponses(message):
 def get_parks(state, query):
     parksKey = os.getenv('parksKey')
     header = {'Authorization': parksKey}
-    print('parksKey:',os.getenv('parksKey'))
     queryString = 'https://developer.nps.gov/api/v0/parks?limit=10&stateCode=' + state + '&q'+query
     apiResponse = requests.get(queryString, headers=header)
     json2 = apiResponse.json()
@@ -55,7 +54,6 @@ def get_parks(state, query):
 def get_park_directions(state, name):
     parksKey = os.getenv('parksKey')
     header = {'Authorization': parksKey}
-    print('parksKey:',os.getenv('parksKey'))
     queryString = 'https://developer.nps.gov/api/v0/parks?limit=10&stateCode=' + state + '&q'+name
     apiResponse = requests.get(queryString, headers=header)
     json2 = apiResponse.json()
