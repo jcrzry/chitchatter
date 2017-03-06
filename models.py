@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from marshmallow import fields
 from sqlalchemy import orm
+from sqlalchemy import desc
 
 
 
@@ -83,16 +84,15 @@ class user(db.Model):
 ###########################################################################################
 ###########################################################################################
 
-class userSchema(ma.ModelSchema):
+class userSchema(ma.Schema):
     class Meta:
-        model = user
+        fields = ('userID','username','imgLink')
         
 
 # Session = orm.scoped_session(orm.sessionmaker())
 # Session.configure(bind=engine)
 
 class messageSchema(ma.ModelSchema):
-    
     class Meta:
         model = message
     user = fields.Nested(userSchema, many=False)
@@ -104,7 +104,7 @@ def getChatMessages(roomID):
     if roomID is None:
         return "No chatroom specified"
     else:
-        allMessages = chatroom.query.get(roomID).roomMessages.all()
+        allMessages = chatroom.query.get(roomID).roomMessages.order_by(message.messID)
         mess_Scheme = messageSchema()
         all_messages = []
         for i in allMessages:
@@ -141,3 +141,13 @@ def addUser(name,link):
     db.session.commit()
     return new_user
     
+def getChatMessagesByLimit(roomID,limitTo):
+    if roomID is None:
+        return "No chatroom specified"
+    else:
+        allMessages = chatroom.query.get(roomID).roomMessages.order_by(desc(message.messID)).limit(limitTo)
+        mess_Scheme = messageSchema()
+        all_messages = []
+        for i in allMessages:
+            all_messages.append(mess_Scheme.dump(i).data)
+        return {'all_messages' : all_messages}

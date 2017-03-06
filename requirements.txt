@@ -5,3 +5,5 @@ flask-marshmallow
 marshmallow-sqlalchemy
 requests
 psycopg2
+gevent
+gevent-websocket

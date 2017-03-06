@@ -29,6 +29,17 @@ export class Content extends React.Component {
                 'messages': data['messages']['all_messages']
             });
         });
+        Socket.on('someone left', (data) => {
+            this.setState({
+                'connected_users' :  data['connected_users'],
+                'numberOfUsers' : data['numberOfUsers']
+            });
+        });
+        Socket.on('i left', (data) => {
+            this.setState({
+                'isLoggedIn' : data['isLoggedIn']
+            });
+        });
     }
     
 

@@ -6,21 +6,28 @@ def checkForLink(message):
         if len(i) > 4:
             if i[:4] == 'http':
                 link = i
-    return i
+                return link
+            
     
                 
 def isImage(link):
     comparisonList = ['.jpg','.png','.jpeg','.gif']
-    for i in comparisonList:
-        if link[-4:] == i or link[-5:] == i:
-            b = True
-        else:
-            b = False
+    if link[-4:] in comparisonList or link[-5:] in comparisonList:
+        b = True
+    else:
+        b = False
     return b
     
 def returnLink(link, flag):
     if flag == True:
-        return "<img src =' " + link + "'/>"
+        return "<img src ='" + link + "'/>"
     else:
-        return "<a href='" + link +"'> Link </a>"
-    
+        return "<a href='" + link +"'>"+ link +"</a>"
+
+def getWrappedMessage(message):
+    link = checkForLink(message)
+    if link != None:
+        b = isImage(link)
+        return message.replace(link,returnLink(link,b))
+    else:
+        return message

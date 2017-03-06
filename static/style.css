@@ -1,6 +1,13 @@
 .body{
     height: 900px;
+    width: 100%;
+    padding: 1000px;
    
+}
+.topBar{
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
 }
 .container{
     display: -webkit-flex;
@@ -9,11 +16,12 @@
     background-repeat:no-repeat;
     background-size: 100%;
     align-items: center;
+    justify-content:center;
     
 }
 
 .messageFrame{
-    background-color: rgba(235, 234, 235, .6);
+    background-color: rgba(235, 234, 235, 0.6);
     border:solid black;
     display: -webkit-flex;
     flex-direction: column;
@@ -27,9 +35,11 @@
     display: -webkit-flex;
     flex-direction: column;
     overflow-y: auto;
-    width: 200px;
+    width: 300px;
     height: 700px;
     align-items: center;
+    border: solid black !important;
+    background: rgba(0, 153, 0,0.6);
 }
 
 .messageContainer{
@@ -47,7 +57,7 @@
     width: 250px;
     font-family: sans-serif;
     background: rgba(107, 137, 255,0.6);
-    alignment-baseline: central;
+    /*align-self: flex-end;*/
     margin-bottom: 25px;
     border: solid black;
     padding: 5px;
@@ -57,8 +67,8 @@
 
 .textField{
     height: 100px;
-    width: 200px;
-    width: auto;
+    width: 800px;
+    border: solid black !important;
     
 }
 
@@ -74,4 +84,8 @@
     height:50px;
     width:50px;
     
+}
+
+.h1{
+    border-bottom: 5px solid black;
 }

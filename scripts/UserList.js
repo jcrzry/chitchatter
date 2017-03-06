@@ -7,14 +7,29 @@ export class UserList extends React.Component{
     constructor(props){
         super(props);
         this.state ={
-            'connected_ users':[]
+            'connected_users':[],
+            'numberOfUsers': 0,
+            'isLoggedIn': 0
         };
     }
     
     componentDidMount(){
-        Socket.on('fb login success', (data) => {
+        Socket.on('login success', (data) => {
             this.setState({
-                'connected_users' :  data['connected_users']
+                'connected_users' :  data['connected_users'],
+                'numberOfUsers' : data['numberOfUsers'],
+                'isLoggedIn' : data['isLoggedIn']
+            });
+        });
+        Socket.on('someone left', (data) => {
+            this.setState({
+                'connected_users' :  data['connected_users'],
+                'numberOfUsers' : data['numberOfUsers']
+            });
+        });
+        Socket.on('i left', (data) => {
+            this.setState({
+                'isLoggedIn' : data['isLoggedIn']
             });
         });
     }
@@ -25,13 +40,14 @@ export class UserList extends React.Component{
             let currentUsers = this.state.connected_users.map(
              (n, index) => <div className = 'userContainer' key={index}>
              <img className = 'userImg'src={n['imgLink']}/>
-             <div>{n['username']}</div>
+             <div><strong>{n['username']}</strong></div>
              </div>
              );
             return(
                  
                 <div>
-                    {currentUsers}
+                    <h1> {this.state.numberOfUsers} Users Online</h1>
+                    <div>{currentUsers}</div>
                 </div>
             )}
             else{

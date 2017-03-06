@@ -6,9 +6,11 @@ export class LoginButtons extends React.Component{
         super(props);
         this.state = {
             'isLoggedIn':0,
-            'loggedInFrom': 'none'
+            'loggedInFrom': 'none',
+            'user': {}
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
     
     componentDidMount(){
@@ -16,7 +18,19 @@ export class LoginButtons extends React.Component{
             console.log('data',data);
             this.setState({
                 'isLoggedIn' : data['isLoggedIn'],
-                'loggedInFrom': data['loggedInFrom']
+                'loggedInFrom': data['loggedInFrom'],
+                'user':data['user']
+            });
+        });
+        Socket.on('someone left', (data) => {
+            this.setState({
+                'connected_users' :  data['connected_users'],
+                'numberOfUsers' : data['numberOfUsers']
+            });
+        });
+        Socket.on('i left', (data) => {
+            this.setState({
+                'isLoggedIn' : data['isLoggedIn']
             });
         });
     }
@@ -44,10 +58,22 @@ export class LoginButtons extends React.Component{
            }
        });
     }
+    handleLogout(event){
+        event.preventDefault();
+        this.setState({
+            'isLoggedIn': 0,
+            'loggedInFrom':'none'
+        });
+        Socket.emit('logout', {
+            'userID':this.state.user['userID']
+        });
+    }
+    
+    
       render() {
-        if(!this.state.isLoggedIn){
+        if(this.state.isLoggedIn === 0){
             return (
-                <div>
+                <div className='topBar'>
                     <div
                      className="fb-login-button"
                      data-max-rows="1"
@@ -65,22 +91,13 @@ export class LoginButtons extends React.Component{
                 </div>
             );
         }
-        else if(this.state.loggedInFrom === 'fb'){
+        else{
             return(
-                    <div
-                     className="fb-login-button"
-                     data-max-rows="1"
-                     data-size="medium"
-                     data-show-faces="false"
-                     data-auto-logout-link="true">
-                    </div>
-                );
-        }
-        else if(this.state.loggedInFrom === 'google'){
-            return(
-                <div
-                        className="g-signin2"
-                        data-theme="dark">
+                <div className ='logout'>
+                    <form onSubmit={this.handleLogout}>
+                        <input type = 'submit' value='Logout'/>
+                    </form>
+                    <div>You're logged in from: {this.state.loggedInFrom} </div>
                 </div>
                 )
         }
