@@ -64,7 +64,7 @@ def get_park_directions(state, name):
         if i['name'].lower() == name.lower():
             result = i
             formattedResult = \
-            "Here's some info on " + result['fullName'] + "\n Directions: " + result['directionsInfo']
+            "Here's the directions to " + result['fullName'] + ": " + result['directionsInfo']
     return formattedResult
 
 

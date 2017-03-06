@@ -18,7 +18,7 @@ class botTest(unittest.TestCase):
         
     def test_ls_command(self):
         response = swansonbot.botResponses("!! neigh")
-        self.assertEquals(response, "Here's a wiki for poor lil' sebastian. http://parksandrecreation.wikia.com/wiki/Li'l_Sebastian")
+        self.assertEquals(response, "Here's a wiki for poor lil' sebastian. <a href='http://parksandrecreation.wikia.com/wiki/Li'l_Sebastian'>Info</a>")
         
     def test_knope_command(self):
         response = swansonbot.botResponses("!! notknope")
@@ -33,7 +33,8 @@ class botTest(unittest.TestCase):
         
     def test_parks_direction_command(self):
         response = swansonbot.botResponses("!! park_directions ca redwood")
-        shortedned = response[:24]
+        shortened = response[:24]
+        print("shortened", shortened)
         self.assertEquals(response,"Here's the directions to Redwood National and State Parks: Redwood National and State Parks is located in northernmost coastal California - almost on the Oregon border. The parks are about 60-miles long, with four visitor centers from north to south.\n\nWe are a six to seven-hour drive (325 miles) north of San Francisco, a six-hour drive (330 miles) south of Portland, OR and a four-hour drive (170 miles) west of Redding, CA.")
         
     def test_link_wrapper(self):
@@ -44,7 +45,7 @@ class botTest(unittest.TestCase):
     def test_img_wrapper(self):
         link = links.checkForLink("this is a message with an image https://photobucket.com/images/randomimage.jpg")
         response = links.returnLink(link,links.isImage(link))
-        self.assertEquals(response, "<img src ='https://photobucket.com/images/randomimage.jpg'/>")
+        self.assertEquals(response, "<img class ='submittedImg' src='https://photobucket.com/images/randomimage.jpg'/>")
     
     def test_wrapped_message(self):
         response = links.getWrappedMessage("this message includes a link http://google.com")
