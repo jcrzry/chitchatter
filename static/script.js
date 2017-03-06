@@ -13444,18 +13444,22 @@ var LoginButtons = exports.LoginButtons = function (_React$Component) {
             } else {
                 return React.createElement(
                     'div',
-                    { className: 'logout' },
-                    React.createElement(
-                        'form',
-                        { onSubmit: this.handleLogout },
-                        React.createElement('input', { type: 'submit', value: 'Logout' })
-                    ),
+                    { className: 'topBar' },
                     React.createElement(
                         'div',
-                        null,
-                        'You\'re logged in from: ',
-                        this.state.loggedInFrom,
-                        ' '
+                        { className: 'logout' },
+                        React.createElement(
+                            'form',
+                            { onSubmit: this.handleLogout },
+                            React.createElement('input', { type: 'submit', value: 'Logout' })
+                        ),
+                        React.createElement(
+                            'div',
+                            null,
+                            'You\'re logged in from: ',
+                            this.state.loggedInFrom,
+                            ' '
+                        )
                     )
                 );
             }

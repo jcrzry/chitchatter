@@ -61,7 +61,7 @@ def on_new_message(data):
 def on_login_complete(data):
     # print("inside fb login")
     if data['fb_user_token']:
-        loggedInFrom = 'fb'
+        loggedInFrom = 'facebook'
         response = requests.get('https://graph.facebook.com/v2.8/me?fields=id%2Cname%2Cpicture&access_token=' + data['fb_user_token'])
         json = response.json()
         name = json['name']

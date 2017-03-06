@@ -93,12 +93,14 @@ export class LoginButtons extends React.Component{
         }
         else{
             return(
+            <div className='topBar'>
                 <div className ='logout'>
                     <form onSubmit={this.handleLogout}>
                         <input type = 'submit' value='Logout'/>
                     </form>
                     <div>You're logged in from: {this.state.loggedInFrom} </div>
                 </div>
+            </div>
                 )
         }
               
