@@ -64,7 +64,7 @@ export class LoginButtons extends React.Component{
             FB.logout();
         }
         else if(this.state.loggedInFrom === 'Google'){
-            gapi.auth.signOut();
+            gapi.auth2.signOut();
         }
         this.setState({
             'isLoggedIn': 0,

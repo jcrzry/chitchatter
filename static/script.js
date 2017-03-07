@@ -13423,7 +13423,7 @@ var LoginButtons = exports.LoginButtons = function (_React$Component) {
             if (this.state.loggedInFrom === 'Facebook') {
                 FB.logout();
             } else if (this.state.loggedInFrom === 'Google') {
-                gapi.auth.signOut();
+                gapi.auth2.signOut();
             }
             this.setState({
                 'isLoggedIn': 0,
