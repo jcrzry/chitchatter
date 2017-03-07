@@ -1,19 +1,21 @@
-# Joshua Ryan Cruz
-#Project 2 - H1.
+#H1 Joshua Ryan Cruz
+#Project 2 - H2.
 ##1. THEME
-    The theme is pretty straight forward to begin with. It's going to revolve around the great city of pawnee indiana. I think
-    there will eventually be a more developed or refined theme. 
+    The theme is pretty straight forward to begin with. It's going to revolve around the great city of Pawnee indiana. I think
+    there will eventually be a more developed or refined theme. The theme is extended by the Ron Swansot, a helpful ron swanson bot. 
+    I've expanded the theme by incorporating the national park service's beta api to retrieve information on this country's wonderful 
+    places. The background is also a great ron swanson/pawnee tribute.
     
 ##2. KNOWN PROBLEMS:
-1.User List:
-  1. The user list is non existant right now. I will have it implemented fully in the future. I am having an issue with 
+1.Login Bar:
+  1. When users logout of facebook, the facebook button still displays 'logout' as if they are logged in.
   2. pulling user information from my database. I have it, and I have a user id being returned currently. 
 2.CSS:
-  1. Given more time I could have made the application more responsive to window resizing. As  
+  1. I would have enjoyed making it more responsive to window resizing as the size is somewhat statically set. As  
      is right now there could be some improvements to formatting.
+  2. There is sometimes overflow in the messages, where message text will overflow out of the message container (rare).
 3. MISC:
-  1. For some reason when a new user connects, all other user's messages are sent with the new user's user id.
-  2. The application does not display the chat window until the page has been refreshed after someone has logged in.
+  1. Images are rendered inline, but if the dimensions are funny, they look weird (because of general css class).
 
 
 ##IMROVEMENTS:
@@ -26,5 +28,25 @@
 
 
 
-
-
+# Regrading:
+1. USERLIST: 
+  1.  all connected users in a list is always visible
+  2.  current number of connected users is always visible
+2.BOT:
+  1. chatbot is clearly identifiable
+  2. bot messages room when people connect or leave
+  3. !! about makes the bot message the room with a description
+  4. !! help makes the bot message the room with a list of all commands
+  5. !! say <something> makes the bot say <something> to the room
+  6. 1 other command 'neigh'
+  7. another command 'notknope'
+  8. bot acknowledges unrecognized commands
+3. CLIENTS:
+  1.  all clients show new user on connect
+  2.  all clients update count on connect
+  3.  all clients remove user on disconnect
+  4.  all clients update count on disconnect
+  5.  database is not SQLite (barely noticed i didn't get points for this, but my db was set up as postgres since last submit..)
+  6.  chat log at / loads with recent or all history (same as above)
+  7.  messages are persisted via database (please see h1 repository)
+  8.  user doesn’t count as connected user until authenticated

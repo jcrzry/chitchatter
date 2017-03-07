@@ -13420,6 +13420,11 @@ var LoginButtons = exports.LoginButtons = function (_React$Component) {
         key: 'handleLogout',
         value: function handleLogout(event) {
             event.preventDefault();
+            if (this.state.loggedInFrom === 'Facebook') {
+                FB.logout();
+            } else if (this.state.loggedInFrom === 'Google') {
+                gapi.auth.signOut();
+            }
             this.setState({
                 'isLoggedIn': 0,
                 'loggedInFrom': 'none'

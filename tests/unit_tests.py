@@ -54,7 +54,10 @@ class botTest(unittest.TestCase):
     def test_wrapped_message_return_original(self):
         response = links.getWrappedMessage("this message does not include a link")
         self.assertEquals(response,"this message does not include a link")
-
+    
+    def test_help_message(self):
+        response = swansonbot.botResponses("!! help")
+        self.assertEquals(response,"Try one of these commands: about, \n say (i'll repeat something), \n neigh, \n notknope, \n park_info [State abreviation] [name] \n park_directions [State abreviation] [name]")
 
 if __name__ == '__main__':
     unittest.main()

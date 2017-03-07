@@ -73,6 +73,8 @@ def on_login_complete(data):
         json = response.json()
         name = (json['given_name'] + " " + json['family_name'])
         link = json['picture']
+    welcome_message = bot.botResponses(("!! say Everyone! " + name + " has finally come to the great city of Pawnee!!"))
+    models.addMessage(1, bot.botID, welcome_message)
     all_messages = models.getChatMessages(1)
     if models.userExists(link):
         user = models.getUser(link)
@@ -113,6 +115,10 @@ def on_login_complete(data):
 @socketio.on('logout')
 def on_logout(data):
     logoutID = data['userID']
+    user = models.getUserByID(data['userID'])
+    name = user['username']
+    welcome_message = bot.botResponses(("!! say Everyone! " + name + " is leaving, probably going back to...Eagleton."))
+    models.addMessage(1, bot.botID, welcome_message)
     if logoutID in users_connected:
         del users_connected[logoutID]
     all_messages = models.getChatMessages(1)
@@ -149,7 +155,7 @@ def test_client_login(data):
 if __name__ == '__main__':
     socketio.run(
          app,
-         port=int(os.getenv('PORT',8080)),
+         port=int(os.getenv('PORT')),
          host=os.getenv('IP', '0.0.0.0'),
          debug=True)
 
