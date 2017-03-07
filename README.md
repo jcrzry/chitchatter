@@ -20,11 +20,12 @@
 
 ##IMROVEMENTS:
 1.THEME:
-  1. There could be more elements revolving around pawnee and actual user images. Also resizing the window should also resize the entire application. 
+  1. There could be more elements revolving around pawnee and actual user images. I would also would have likeed to 
+      include the use of pivate rooms. But this might be something to look into in the future.
 2.APPEARANCE:
   1. I would have just wanted it to be have a unified style.
-3. EVERYTHING:
-  1. I want to improve everything. 
+3. Unicode
+  1. Emojis, I would have liked to add an emoji library to the chat.
 
 
 
