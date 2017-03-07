@@ -123,7 +123,8 @@ def on_logout(data):
         del users_connected[logoutID]
     all_messages = models.getChatMessages(1)
     connectedList = list(users_connected.values())
-    socketio.emit('someone left', {'messages':all_messages, 'connected_users':connectedList}, broadcast=True)
+    numberOfUsers = len(connectedList)
+    socketio.emit('someone left', {'messages':all_messages, 'connected_users':connectedList, 'numberOfUsers':numberOfUsers}, broadcast=True)
     socketio.emit('i left', {'isLoggedIn': 0}, room=data['userID'])
     leave_room(data['userID'])
     

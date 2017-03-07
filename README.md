@@ -24,8 +24,10 @@
       include the use of pivate rooms. But this might be something to look into in the future.
 2.APPEARANCE:
   1. I would have just wanted it to be have a unified style.
-3. Unicode
+3. UNIDOCE:
   1. Emojis, I would have liked to add an emoji library to the chat.
+4. CIRCLECI:
+  1. I had to set up circleci to use the heroku pg instance using the database's uri. So when deploying it adds a test message to the chat.
 
 
 
