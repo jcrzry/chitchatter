@@ -27,13 +27,13 @@ def hello():
 
 @socketio.on('connect')
 def on_connect():
-    print 'Someone connected!'
+    print ('Someone connected!')
     isConnected = 1
     socketio.emit('isConnected', {'connected':isConnected})
 
 @socketio.on('disconnect')
 def on_disconnect():
-    print 'Someone disconnected!'
+    print ('Someone disconnected!')
     
 @socketio.on('new message')
 def on_new_message(data):
